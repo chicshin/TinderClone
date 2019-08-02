@@ -20,9 +20,23 @@ extension SignUpViewController {
         signUpLabel.attributedText = attributedText
     }
     
+    // 1) show present photo library
     func styleProfileImage() {
         profileimage.layer.cornerRadius = profileimage.frame.width/2
         profileimage.clipsToBounds = true
+        
+        profileimage.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(presentPicker))
+        profileimage.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func presentPicker() {
+        let picker = UIImagePickerController()
+        picker.allowsEditing = true
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        //let the signup view present the image picker controller
+        self.present(picker, animated: true, completion: nil)
     }
     
     func styleFullNameTextField() {
@@ -90,5 +104,26 @@ extension SignUpViewController {
             ])
         attributedText.append(attributedSubText)
         signInButton.setAttributedTitle(attributedText, for: UIControl.State.normal)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+}
+
+// 2) now present the image picked from photo library in image view
+extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let imageSelected = info[.originalImage] as? UIImage {
+            image = imageSelected
+            profileimage.image = imageSelected
+        }
+        
+        if let imageEdited = info[.editedImage] as? UIImage {
+            image = imageEdited
+            profileimage.image = imageEdited
+        }
+        
+        dismiss(animated: true, completion: nil)
     }
 }

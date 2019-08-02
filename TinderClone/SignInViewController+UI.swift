@@ -77,4 +77,8 @@ extension SignInViewController {
         
         findPasswordButton.setAttributedTitle(attributedText, for: UIControl.State.normal)
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 }
