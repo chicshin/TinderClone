@@ -15,21 +15,21 @@ import ProgressHUD
 
 class UserApi {
     func signUp(withUsername username: String, email: String, password: String, image: UIImage?, onSuccess: @escaping() -> Void, onError: @escaping(_ errorMessage: String) -> Void) {
-        Auth.auth().createUser(withEmail: email, password: password , completion: { (result, error) in
+        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
             if error != nil {
                 ProgressHUD.showError(error!.localizedDescription)
                 return
             }
             if let authData = result {
-                var dict : Dictionary<String,Any> = [
-                    "uid" : authData.user.uid,
-                    "email" : email,
-                    "username" : username,
-                    "profileImageUrl" : "",
+                let dict : Dictionary<String,Any> = [
+                    UID : authData.user.uid,
+                    EMAIL: email,
+                    USERNAME : username,
+                    PROFILE_IMAGE_URL : "",
                 ]
                 
                 guard let imageSelected = image else{
-                    ProgressHUD.showError("Please choose your profile image")
+                    ProgressHUD.showError(ERROR_EMPTY_PHOTO)
                     return
                 }
                 
@@ -37,34 +37,16 @@ class UserApi {
                     return
                 }
                 
-                let storageRef = Storage.storage().reference().child("profile").child(authData.user.uid)
-                
+                let storageProfile = Ref().storageSpecificProfile(uid: authData.user.uid)
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
                 
-                storageRef.putData(imageData, metadata: metadata, completion: { (storageMetaData, error) in
-                    if error != nil {
-                        ProgressHUD.showError(error!.localizedDescription)
-                        return
-                    }
-                    
-                    storageRef.downloadURL(completion: { (url, error) in
-                        if let metaImageUrl = url?.absoluteString {
-                            dict["profileImageUrl"] = metaImageUrl
-                            
-                            Database.database().reference().child("users").child(authData.user.uid).updateChildValues(dict, withCompletionBlock: { (error, ref) in
-                                if error == nil {
-                                    onSuccess()
-                                } else {
-                                    onError(error!.localizedDescription)
-                                }
-                                
-                            })
-                        }
-                    })
+                StorageService.savePhoto(username: username, uid: authData.user.uid, data: imageData, metadata: metadata, storageProfile: storageProfile, dict: dict, onSuccess: {
+                    onSuccess()
+                }, onError: { (errorMessage) in
+                    onError(errorMessage)
                 })
-                
             }
-        })
+        }
     }
 }
