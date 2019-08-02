@@ -30,4 +30,14 @@ class FindPasswordViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func resetPasswordDidTapped(_ sender: Any) {
+        self.validateFields()
+        Api.User.resetPassword(email: self.emailTextField.text!, onSuccess: {
+            self.view.endEditing(true)
+            ProgressHUD.showSuccess(SUCCESS_EMAIL_RESET)
+            self.navigationController?.popViewController(animated: true)
+        }) { (errorMessage) in
+            ProgressHUD.showError(errorMessage)
+        }
+    }
 }

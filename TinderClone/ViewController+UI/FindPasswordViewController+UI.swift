@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import ProgressHUD
+
 extension FindPasswordViewController {
     func styleCloseButton() {
         closeButton.setImage(UIImage(named: "close"), for: UIControl.State.normal)
@@ -36,5 +38,12 @@ extension FindPasswordViewController {
         submitButton.clipsToBounds = true
         submitButton.setTitleColor(.white, for: UIControl.State.normal)
         submitButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+    }
+    
+    func validateFields() {
+        guard let email = self.emailTextField.text, email != "" else{
+            ProgressHUD.showError(ERROR_EMPTY_EMAIL_RESET)
+            return
+        }
     }
 }

@@ -38,4 +38,13 @@ class SignInViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func signInButtonDidTapped(_ sender: Any) {
+        self.view.endEditing(true)
+        self.validateFields()
+        self.signIn(onSuccess: {
+            //switch view
+        }) { (errorMessage) in
+            ProgressHUD.showError(errorMessage)
+        }
+    }
 }
