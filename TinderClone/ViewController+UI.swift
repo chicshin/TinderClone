@@ -29,8 +29,8 @@ extension ViewController {
     }
     
     func styleTermsLabel() {
-        let termsOfServiceTitle = "By clicking \"Create a new account\", you agree to our"
-        let subTermsOfService = "\nTerms of Service"
+        let termsOfServiceTitle = "By clicking \"Create a new account\", you agree to our "
+        let subTermsOfService = "Terms of Service"
         
         
         let attributedTermsText = NSMutableAttributedString(string: termsOfServiceTitle, attributes:
@@ -50,7 +50,7 @@ extension ViewController {
         attributedTermsText.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedTermsText.length))
         
         termsOfServiceLabel.attributedText = attributedTermsText
-        termsOfServiceLabel.numberOfLines = 0
+//        termsOfServiceLabel.numberOfLines = 0
     }
     
     func styleFacebookButton() {

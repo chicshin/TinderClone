@@ -34,5 +34,8 @@ class SignInViewController: UIViewController {
         styleFindPasswordButton()
     }
     
-
+    @IBAction func dismissAction(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
 }

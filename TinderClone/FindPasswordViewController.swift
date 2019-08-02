@@ -26,5 +26,8 @@ class FindPasswordViewController: UIViewController {
         styleEmailTextField()
         styleSubmitButton()
     }
-
+    @IBAction func dismissAction(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
 }

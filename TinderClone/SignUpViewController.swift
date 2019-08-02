@@ -37,4 +37,9 @@ class SignUpViewController: UIViewController {
         styleSignUpButton()
         styleSignInButton()
     }
+    
+    @IBAction func closeButton_touchUpInside(_ sender: Any) {
+        navigationController?.popViewController(animated: true)
+    }
+    
 }
