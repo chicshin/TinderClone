@@ -7,6 +7,10 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
+import FirebaseStorage
+import ProgressHUD
 
 extension SignUpViewController {
     func styleTitle() {
@@ -106,6 +110,30 @@ extension SignUpViewController {
         signInButton.setAttributedTitle(attributedText, for: UIControl.State.normal)
     }
     
+    func validateFields() {
+        guard let username = self.fullNameTextField.text, !username.isEmpty else {
+            ProgressHUD.showError("Please enter an username")
+            return
+        }
+        guard let email = self.emailTextField.text, !email.isEmpty else {
+            ProgressHUD.showError("Please enter an email address")
+            return
+        }
+        guard let password = self.passwordTextField.text, !password.isEmpty else {
+            ProgressHUD.showError("Please enter a password")
+            return
+        }
+    }
+    
+    func signUp() {
+        
+        Api.User.signUp(withUsername: self.fullNameTextField.text!, email: self.emailTextField.text!, password: self.passwordTextField.text!, image: self.image, onSuccess: {
+            print("Done")
+        }) { (errorMessage) in
+            print(errorMessage)
+        }
+        
+    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

@@ -44,21 +44,6 @@ class SignUpViewController: UIViewController {
         styleSignInButton()
     }
     
-    func validateFields() {
-        guard let username = self.fullNameTextField.text, !username.isEmpty else {
-            ProgressHUD.showError("Please enter an username")
-            return
-        }
-        guard let email = self.emailTextField.text, !email.isEmpty else {
-            ProgressHUD.showError("Please enter an email address")
-            return
-        }
-        guard let password = self.passwordTextField.text, !password.isEmpty else {
-            ProgressHUD.showError("Please enter a password")
-            return
-        }
-    }
-    
     @IBAction func closeButton_touchUpInside(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
